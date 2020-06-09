@@ -1,5 +1,6 @@
 import pyttsx3
 import datetime
+import speech_recognition as sr
 
 engine = pyttsx3.init()
 username = "NoobSaiyan"
@@ -30,4 +31,21 @@ def greeting():
     speak("Today's date")
     date()
 
-greeting()
+def takeCommand():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        r.pause_threshold = 1 
+        audio = r.listen(source)
+
+    try:
+        print("Recognizing...")
+        query = r.recognize_google(audio, language = 'en-in')
+        print(query)
+    except Exception as e:
+        print(e)
+        speak("Say that again please...")
+        return "None"
+    return query
+
+takeCommand()
