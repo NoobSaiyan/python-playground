@@ -1,6 +1,7 @@
 import pyttsx3
 import datetime
 import speech_recognition as sr
+import wikipedia
 
 engine = pyttsx3.init()
 username = "NoobSaiyan"
@@ -11,10 +12,12 @@ def speak(command):
 
 def time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
+    speak("Current time is")
     speak(Time)
 
 def date():
     day = datetime.datetime.now().strftime("%d:%B:%Y")
+    speak("Today's date")
     speak(day)
 
 def greeting():
@@ -26,9 +29,7 @@ def greeting():
     elif hour >=18 and hour < 24:
         speak("good evening "+username)
     speak("Welcome back")
-    speak("Current time is")
     time()
-    speak("Today's date")
     date()
 
 def takeCommand():
@@ -48,4 +49,26 @@ def takeCommand():
         return "None"
     return query
 
-takeCommand()
+if __name__ == "__main__":
+    greeting()
+    while True:
+        query = takeCommand().lower()
+        if 'time' in query:
+            time()
+        elif 'date' in query:
+            date()
+        elif 'wikipedia' in query:
+            speak('Searching...')
+            query = query.replace('wikipedia','')
+            try:
+                result = wikipedia.summary(query, sentences = 2)
+                print(result)
+                speak(result)
+            except Exception as e:
+                print(e)
+                speak('sorry! be more specific please')
+        elif 'offline' in query:
+            quit()
+        else:
+            speak('i dont have answer for this ')
+        
